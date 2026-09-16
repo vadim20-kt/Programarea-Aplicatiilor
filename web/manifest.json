@@ -1,6 +1,6 @@
 {
-    "name": "calculator_imc",
-    "short_name": "calculator_imc",
+    "name": "proiect_lab2",
+    "short_name": "proiect_lab2",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
