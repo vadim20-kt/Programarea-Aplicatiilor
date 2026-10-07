@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../utils/app_colors.dart';
 
+// Componentă reutilizabilă pentru titlul unei secțiuni cu opțiunea "See All"
 class SectionHeader extends StatelessWidget {
   final String title;
   const SectionHeader({super.key, required this.title});
@@ -10,6 +11,7 @@ class SectionHeader extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        // Titlul secțiunii
         Text(
           title,
           style: const TextStyle(
@@ -18,6 +20,8 @@ class SectionHeader extends StatelessWidget {
             color: AppColors.textPrimary,
           ),
         ),
+        
+        // Etichetă interactivă
         const Text(
           "See All",
           style: TextStyle(

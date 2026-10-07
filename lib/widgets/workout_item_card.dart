@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import '../utils/app_colors.dart';
 
-// Card individual pentru programele de antrenament din grilă
+// Card individual pentru afișarea unui program de antrenament
 class WorkoutItemCard extends StatelessWidget {
   final String title;
   final String kcal;
   final String time;
   final bool isPro;
   final String imageUrl;
+  final bool isFavorite;
+  final VoidCallback onFavoriteToggle;
 
   const WorkoutItemCard({
     super.key,
@@ -16,6 +18,8 @@ class WorkoutItemCard extends StatelessWidget {
     required this.time,
     required this.isPro,
     required this.imageUrl,
+    required this.isFavorite,
+    required this.onFavoriteToggle,
   });
 
   @override
@@ -23,7 +27,7 @@ class WorkoutItemCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
-        // Imaginea de fundal cu filtru întunecat
+        // Imagine de fundal cu filtru întunecat pentru lizibilitate
         image: DecorationImage(
           image: NetworkImage(imageUrl),
           fit: BoxFit.cover,
@@ -31,6 +35,7 @@ class WorkoutItemCard extends StatelessWidget {
             Colors.black.withValues(alpha: 0.35),
             BlendMode.darken,
           ),
+          onError: (exception, stackTrace) {},
         ),
       ),
       child: Material(
@@ -41,7 +46,28 @@ class WorkoutItemCard extends StatelessWidget {
           splashColor: Colors.white.withValues(alpha: 0.2),
           child: Stack(
             children: [
-              // Badge "Pro" afișat opțional în colțul din dreapta sus
+              // Butonul de adăugare/eliminare din favorite (stânga sus)
+              Positioned(
+                top: 12,
+                left: 12,
+                child: GestureDetector(
+                  onTap: onFavoriteToggle,
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withValues(alpha: 0.4),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      isFavorite ? Icons.favorite : Icons.favorite_border,
+                      color: isFavorite ? Colors.redAccent : Colors.white,
+                      size: 18,
+                    ),
+                  ),
+                ),
+              ),
+
+              // Eticheta "Pro" (dreapta sus)
               if (isPro)
                 Positioned(
                   top: 12,
@@ -70,7 +96,7 @@ class WorkoutItemCard extends StatelessWidget {
                   ),
                 ),
               
-              // Informațiile antrenamentului poziționate în partea de jos
+              // Titlul, caloriile și durata antrenamentului (jos)
               Positioned(
                 bottom: 16,
                 left: 12,
@@ -90,7 +116,8 @@ class WorkoutItemCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    // Calorii și timp
+                    
+                    // Afișare calorii și timp
                     FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,

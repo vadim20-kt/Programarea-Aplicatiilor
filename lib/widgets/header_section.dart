@@ -1,26 +1,34 @@
 import 'package:flutter/material.dart';
 import '../utils/app_colors.dart';
 
-// Secțiunea de sus cu data curentă, mesajul de bun găsit și notificări
+// Secțiunea de antet cu data curentă, mesajul de salut și butonul de notificări
 class HeaderSection extends StatelessWidget {
-  const HeaderSection({super.key});
+  final String date;
+  final String greeting;
+
+  const HeaderSection({
+    super.key,
+    this.date = "Friday, 20 May",
+    this.greeting = "Good Morning",
+  });
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Column(
+        // Data curentă și textul de salut
+        Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Friday, 20 May",
-              style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
+              date,
+              style: const TextStyle(color: AppColors.textSecondary, fontSize: 14),
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Text(
-              "Good Morning",
-              style: TextStyle(
+              greeting,
+              style: const TextStyle(
                 color: AppColors.textPrimary,
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -28,6 +36,8 @@ class HeaderSection extends StatelessWidget {
             ),
           ],
         ),
+        
+        // Iconița rotundă pentru notificări
         Stack(
           children: [
             Container(
@@ -38,6 +48,8 @@ class HeaderSection extends StatelessWidget {
               ),
               child: const Icon(Icons.notifications_outlined, color: AppColors.textPrimary),
             ),
+            
+            // Indicator roșu pentru notificări necitite
             Positioned(
               top: 12,
               right: 12,

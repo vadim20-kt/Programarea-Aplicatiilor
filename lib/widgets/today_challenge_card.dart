@@ -1,9 +1,22 @@
 import 'package:flutter/material.dart';
 import '../utils/app_colors.dart';
 
-// Cardul care afișează progresul provocării zilnice
+// Card pentru afișarea progresului provocării din ziua curentă
 class TodayChallengeCard extends StatelessWidget {
-  const TodayChallengeCard({super.key});
+  final String title;
+  final String activity;
+  final int completed;
+  final int total;
+  final double progress;
+
+  const TodayChallengeCard({
+    super.key,
+    this.title = "Today's Challenge",
+    this.activity = "Running",
+    this.completed = 15,
+    this.total = 20,
+    this.progress = 0.75,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,18 +29,18 @@ class TodayChallengeCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Titlul și tipul provocării
-          const Column(
+          // Titlul și tipul activității
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Today's Challenge",
-                style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
+                title,
+                style: const TextStyle(color: AppColors.textSecondary, fontSize: 14),
               ),
-              SizedBox(height: 4),
+              const SizedBox(height: 4),
               Text(
-                "Running",
-                style: TextStyle(
+                activity,
+                style: const TextStyle(
                   color: AppColors.textWhite,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -35,6 +48,7 @@ class TodayChallengeCard extends StatelessWidget {
               ),
             ],
           ),
+          
           // Indicator circular de progres
           Stack(
             alignment: Alignment.center,
@@ -43,15 +57,15 @@ class TodayChallengeCard extends StatelessWidget {
                 width: 60,
                 height: 60,
                 child: CircularProgressIndicator(
-                  value: 0.75,
+                  value: progress,
                   backgroundColor: Colors.grey[800],
                   valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primaryGreen),
                   strokeWidth: 5,
                 ),
               ),
-              const Text(
-                "15/20",
-                style: TextStyle(
+              Text(
+                "$completed/$total",
+                style: const TextStyle(
                   color: AppColors.textWhite,
                   fontSize: 12,
                   fontWeight: FontWeight.bold,

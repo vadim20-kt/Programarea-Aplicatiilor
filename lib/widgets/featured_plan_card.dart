@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../utils/app_colors.dart';
 
-// Card pentru planurile recomandate de fitness
+// Card reutilizabil pentru afișarea planurilor de antrenament recomandate
 class FeaturedPlanCard extends StatelessWidget {
   final String title;
   final String imageUrl;
@@ -23,11 +23,12 @@ class FeaturedPlanCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
-        // Imaginea de fundal cu filtru întunecat pentru lizibilitate
+        // Imaginea de fundal cu filtru întunecat pentru lizibilitate sporită
         image: DecorationImage(
           image: NetworkImage(imageUrl),
           fit: BoxFit.cover,
           colorFilter: ColorFilter.mode(Colors.black.withValues(alpha: 0.4), BlendMode.darken),
+          onError: (exception, stackTrace) {},
         ),
       ),
       child: Material(
@@ -52,7 +53,7 @@ class FeaturedPlanCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 
-                // Durata și frecvența antrenamentului
+                // Durata și frecvența săptămânală
                 Row(
                   children: [
                     const Icon(Icons.fitness_center, color: AppColors.textWhite, size: 18),
@@ -66,7 +67,7 @@ class FeaturedPlanCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 
-                // Butonul de start
+                // Butonul de lansare a planului
                 ElevatedButton(
                   onPressed: onStartPressed,
                   style: ElevatedButton.styleFrom(
