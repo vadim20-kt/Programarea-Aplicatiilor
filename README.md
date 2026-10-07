@@ -1,79 +1,82 @@
 # Fitness App - Modern Gym Discovery & Workout Tracker
 
-Welcome to the **Fitness App** project! This is a professional Flutter-based mobile application designed to offer a sleek, high-performance experience for tracking workouts and exploring local fitness centers.
-
-If you are a student, a developer, or just someone interested in seeing a modern UI implementation in Flutter, this guide will help you get the app running on your device in minutes.
+Proiect Flutter dezvoltat pentru disciplina **Programarea Aplicațiilor** (Laboratorul 3), axat pe **State Management** (BLoC/Cubit), **programare asincronă** și arhitectură modulară cu componente UI reutilizabile.
 
 ---
 
-## 🌟 What's Inside?
+## 🌟 Caracteristici și Funcționalități (Laborator 3)
 
-Once you install the app, you will be able to explore:
-*   **Dynamic Dashboard**: A beautiful greeting screen with progress indicators for daily challenges.
-*   **Curated Workout Plans**: High-quality cards showcasing massive upper/lower body programs.
-*   **Interactive Workout Grid**: Filterable exercises (Yoga, Pilates, Cardio) with real-time calorie and time metrics.
-*   **Premium "Pro" Features**: Visual markers for exclusive content.
-*   **Detailed Gym Profiles**: A deep dive into gym amenities (WiFi, Pool, Showers, etc.) with a built-in reservation UI.
+Aplicația include toate cerințele de State Management, încărcare asincronă și interacțiune cu datele:
+
+* ⚡ **State Management cu BLoC / Cubit**: Gestionare reactivă a stării aplicației (`FitnessLoading`, `FitnessSuccess`, `FitnessEmpty`, `FitnessError`) prin pachetul `flutter_bloc`.
+* 📂 **Încărcare asincronă din JSON**: Datele sunt stocate în `assets/fitness_data.json` și citite asincron prin `rootBundle.loadString()`.
+* 🔍 **Căutare în timp real**: Filtrare dinamică a antrenamentelor după titlu prin câmpul de căutare.
+* 🏷️ **Filtrare pe categorii**: Chips-uri orizontale interactive (*All Type*, *Pilates*, *Cardio*, *Boxing*, *Yoga*).
+* 🔀 **Sortare avansată**: Selector Dropdown cu 6 criterii (*Titlu A-Z*, *Titlu Z-A*, *Calorii crescător/descrescător*, *Durată scurtă/lungă*).
+* ❤️ **Sistem de Favorite**: Adăugare și eliminare interactivă din lista de favorite (simbol inimioară) cu mesaj de confirmare prin `SnackBar`.
+* 🏢 **Pagina de Detalii & Rezervare**: Navigare prin `Navigator.push` la ecranul de detalii al sălii ([GymDetailScreen]), afișând imagini, descriere, facilități și buton funcțional de rezervare.
+* 🧱 **Arhitectură Modulară**: Organizare pe directoare speciale (`cubit`, `models`, `services`, `screens`, `widgets`, `utils`).
+* 🧪 **Testare Automată**: Teste widget implementate în `test/widget_test.dart` pentru verificarea încărcării ecranului principal.
 
 ---
 
-## 🛠 Installation Guide for New Users
+## 🛠 Ghid de Instalare și Rulare
 
-Follow these steps to set up the environment and launch the app.
+### 1. Cerințe preliminare
+* **Flutter SDK** (versiunea 3.13.0 sau mai nouă)
+* **Android Studio** sau **VS Code** cu extensiile Flutter și Dart instalate
+* **Git**
 
-### 1. Preparation
-Ensure you have the following installed on your system:
-*   **Flutter SDK** (Version 3.13.0 or higher): [Install Guide](https://docs.flutter.dev/get-started/install)
-*   **Android Studio** or **VS Code** with Flutter extensions.
-*   **Git**: [Download Git](https://git-scm.com/downloads)
-
-### 2. Getting the Source Code
-Open your terminal or command prompt and run the following:
-
+### 2. Clonarea repozitoriului
 ```bash
-# Clone the repository to your local machine
+# Clonează repozitoriul
 git clone https://github.com/vadim20-kt/Programarea-Aplicatiilor.git
 
-# Enter the project directory
+# Intră în directorul proiectului
 cd Programarea-Aplicatiilor
 
-# Switch to the correct development branch (IMPORTANT)
-git checkout lab2
+# Schimbă pe branch-ul lab3
+git checkout lab3
 ```
 
-### 3. Setting Up the Project
-Once inside the project folder on the `lab2` branch, execute:
+### 3. Instalarea dependențelor
+```bash
+# Descarcă pachetele
+flutter pub get
 
-1.  **Download Libraries**:
-    ```bash
-    flutter pub get
-    ```
-2.  **Initialize Branding**: (This creates the app icons for your phone)
-    ```bash
-    dart run flutter_launcher_icons
-    ```
+# Opțional: generează iconițele aplicației
+dart run flutter_launcher_icons
+```
 
-### 4. Running the App
-1.  Open an **Emulator** (via Android Studio) or connect your **Android/iOS device** via USB.
-2.  Make sure your device is recognized by running `flutter devices`.
-3.  Launch the app:
-    ```bash
-    flutter run
-    ```
+### 4. Rularea aplicației și a testelor
+```bash
+# Rularea testelor automate
+flutter test
+
+# Rularea aplicației pe dispozitiv / emulator
+flutter run
+```
 
 ---
 
-## 💡 Troubleshooting
-*   **Command not found**: Ensure Flutter is added to your system's PATH variables.
-*   **Build failed**: Run `flutter clean` and then `flutter pub get` to reset the build state.
-*   **Icons not appearing**: Make sure you ran the `flutter_launcher_icons` command mentioned in Step 3.
+## 📁 Structura Proiectului
+
+```text
+lib/
+├── cubit/          # FitnessCubit și stările aplicației (FitnessState)
+├── models/         # Modelele de date (FitnessData, WorkoutItem, etc.)
+├── services/       # Serviciul de citire asincronă din fitness_data.json
+├── providers/      # Provider alternativ (ChangeNotifier)
+├── screens/        # Ecranele principale (HomeScreen, GymDetailScreen)
+├── widgets/        # Componente UI reutilizabile (WorkoutItemCard, FeaturedPlanCard, etc.)
+└── utils/          # Paleta de culori AppColors
+assets/
+└── fitness_data.json # Fișierul de date JSON
+```
 
 ---
 
-## 📁 Repository & Development
-This project was developed by **Vadim** as part of a University Laboratory for **Programarea Aplicațiilor**.
-
-*   **GitHub**: [vadim20-kt](https://github.com/vadim20-kt)
-*   **Branch for this version**: `lab2`
-
-Feel free to explore the code in `lib/` to see how the screens and custom widgets are implemented!
+## 👤 Dezvoltator
+Proiect dezvoltat de **Vadim** pentru disciplina **Programarea Aplicațiilor**.
+* **GitHub**: [vadim20-kt](https://github.com/vadim20-kt)
+* **Branch curent**: `lab3`
