@@ -15,8 +15,8 @@ android {
     }
 
     defaultConfig {
-        // ID-ul unic al aplicației pe Android (previne suprascrierea altor aplicații)
-        applicationId = "com.example.fitness_app"
+        // ID-ul unic pentru versiunea extinsa de Laborator 3
+        applicationId = "com.example.fitness_app_lab3"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
