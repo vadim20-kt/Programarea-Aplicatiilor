@@ -1,5 +1,5 @@
-name: proiect_lab2
-description: "A new Flutter project."
+name: fitness_app_lab3
+description: "Aplicație Flutter - Laboratorul 3 (State Management BLoC/Cubit)"
 publish_to: 'none'
 
 version: 1.0.0+1
