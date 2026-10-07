@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import '../utils/app_colors.dart';
 
-// Card special pentru planurile recomandate de fitness
-// Permite acum personalizarea titlului, imaginii si a detaliilor de antrenament
+// Card pentru planurile recomandate de fitness
 class FeaturedPlanCard extends StatelessWidget {
   final String title;
   final String imageUrl;
@@ -24,12 +23,11 @@ class FeaturedPlanCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
-        // Imaginea de fundal primita ca parametru
+        // Imaginea de fundal cu filtru întunecat pentru lizibilitate
         image: DecorationImage(
           image: NetworkImage(imageUrl),
           fit: BoxFit.cover,
-          // Strat intunecat peste imagine pentru lizibilitatea textului
-          colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.4), BlendMode.darken),
+          colorFilter: ColorFilter.mode(Colors.black.withValues(alpha: 0.4), BlendMode.darken),
         ),
       ),
       child: Material(
@@ -43,7 +41,7 @@ class FeaturedPlanCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                // Titlul personalizat al planului
+                // Titlul planului
                 Text(
                   title,
                   style: const TextStyle(
@@ -54,7 +52,7 @@ class FeaturedPlanCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 
-                // Informatii despre saptamani si frecventa (ex: 5 week, 4x/week)
+                // Durata și frecvența antrenamentului
                 Row(
                   children: [
                     const Icon(Icons.fitness_center, color: AppColors.textWhite, size: 18),
@@ -68,7 +66,7 @@ class FeaturedPlanCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 
-                // Butonul de start cu stilul vibrant definit in AppColors
+                // Butonul de start
                 ElevatedButton(
                   onPressed: onStartPressed,
                   style: ElevatedButton.styleFrom(

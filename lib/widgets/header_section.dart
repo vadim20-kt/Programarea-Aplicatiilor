@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../utils/app_colors.dart';
 
+// Secțiunea de sus cu data curentă, mesajul de bun găsit și notificări
 class HeaderSection extends StatelessWidget {
   const HeaderSection({super.key});
 
@@ -9,9 +10,9 @@ class HeaderSection extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Column(
+        const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Text(
               "Friday, 20 May",
               style: TextStyle(color: AppColors.textSecondary, fontSize: 14),

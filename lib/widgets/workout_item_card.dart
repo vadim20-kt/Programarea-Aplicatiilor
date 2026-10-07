@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../utils/app_colors.dart';
 
-// Card individual pentru programele de antrenament
+// Card individual pentru programele de antrenament din grilă
 class WorkoutItemCard extends StatelessWidget {
   final String title;
   final String kcal;
@@ -23,13 +23,12 @@ class WorkoutItemCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
-        // Imaginea de fundal a cardului
+        // Imaginea de fundal cu filtru întunecat
         image: DecorationImage(
           image: NetworkImage(imageUrl),
           fit: BoxFit.cover,
-          // Filtru intunecat pentru lizibilitatea textului
           colorFilter: ColorFilter.mode(
-            Colors.black.withOpacity(0.35),
+            Colors.black.withValues(alpha: 0.35),
             BlendMode.darken,
           ),
         ),
@@ -39,10 +38,10 @@ class WorkoutItemCard extends StatelessWidget {
         child: InkWell(
           onTap: () {},
           borderRadius: BorderRadius.circular(24),
-          splashColor: Colors.white.withOpacity(0.2),
+          splashColor: Colors.white.withValues(alpha: 0.2),
           child: Stack(
             children: [
-              // Badge-ul "Pro" pozitionat in coltul din dreapta sus
+              // Badge "Pro" afișat opțional în colțul din dreapta sus
               if (isPro)
                 Positioned(
                   top: 12,
@@ -50,12 +49,12 @@ class WorkoutItemCard extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.95),
+                      color: Colors.white.withValues(alpha: 0.95),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Row(
+                    child: const Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: const [
+                      children: [
                         Icon(Icons.workspace_premium, color: AppColors.primaryGreen, size: 14),
                         SizedBox(width: 4),
                         Text(
@@ -71,7 +70,7 @@ class WorkoutItemCard extends StatelessWidget {
                   ),
                 ),
               
-              // Informatiile pozitionate jos - Folosim FittedBox pentru a evita overflow
+              // Informațiile antrenamentului poziționate în partea de jos
               Positioned(
                 bottom: 16,
                 left: 12,
@@ -91,7 +90,7 @@ class WorkoutItemCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    // Folosim FittedBox pentru a scala automat continutul daca nu are loc (elimina eroarea de pixeli)
+                    // Calorii și timp
                     FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,

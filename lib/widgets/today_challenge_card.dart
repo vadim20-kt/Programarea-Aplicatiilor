@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../utils/app_colors.dart';
 
+// Cardul care afișează progresul provocării zilnice
 class TodayChallengeCard extends StatelessWidget {
   const TodayChallengeCard({super.key});
 
@@ -15,9 +16,10 @@ class TodayChallengeCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
+          // Titlul și tipul provocării
+          const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Text(
                 "Today's Challenge",
                 style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
@@ -33,6 +35,7 @@ class TodayChallengeCard extends StatelessWidget {
               ),
             ],
           ),
+          // Indicator circular de progres
           Stack(
             alignment: Alignment.center,
             children: [

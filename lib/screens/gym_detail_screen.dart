@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../utils/app_colors.dart';
 
-// Pagina cu detaliile salii de sport (Pagina 2)
+// Ecranul cu detaliile sălii / antrenamentului
 class GymDetailScreen extends StatelessWidget {
   const GymDetailScreen({super.key});
 
@@ -11,13 +11,13 @@ class GymDetailScreen extends StatelessWidget {
       backgroundColor: AppColors.background,
       body: Stack(
         children: [
-          // Continutul paginii care se poate derula in sus
+          // Conținutul paginii care poate fi derulat în sus
           SingleChildScrollView(
             padding: const EdgeInsets.only(bottom: 140),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Imaginea mare din antet
+                // Imaginea mare de antet
                 SizedBox(
                   height: 400,
                   width: double.infinity,
@@ -27,15 +27,15 @@ class GymDetailScreen extends StatelessWidget {
                   ),
                 ),
 
-                // Informatiile si facilitatile salii
+                // Informațiile și descrierea sălii
                 Padding(
                   padding: const EdgeInsets.all(24.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Rating si recenzii
-                      Row(
-                        children: const [
+                      // Rating și recenzii
+                      const Row(
+                        children: [
                           Icon(Icons.star, color: AppColors.starYellow, size: 22),
                           SizedBox(width: 6),
                           Text(
@@ -48,7 +48,7 @@ class GymDetailScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
 
-                      // Numele salii
+                      // Numele și locația sălii
                       const Text(
                         "Mid City Gym Training",
                         style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
@@ -60,7 +60,7 @@ class GymDetailScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 24),
                       
-                      // Descrierea salii
+                      // Descrierea
                       const Text(
                         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.",
                         style: TextStyle(color: AppColors.textSecondary, height: 1.5),
@@ -69,14 +69,14 @@ class GymDetailScreen extends StatelessWidget {
                       const Divider(color: AppColors.borderGrey),
                       const SizedBox(height: 24),
 
-                      // Sectiunea de facilitati (Amenities) - Acum cu mai multe randuri pentru scroll
+                      // Secțiunea de facilități (Amenities)
                       const Text(
                         "Amenities",
                         style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 16),
 
-                      // Randul 1 de facilitati
+                      // Rândul 1: Dușuri și vestiare
                       Row(
                         children: [
                           Expanded(child: _buildAmenityCard(Icons.shower_outlined, "Showers")),
@@ -86,7 +86,7 @@ class GymDetailScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       
-                      // Randul 2 de facilitati (Adaugat pentru a arata mai multe iconite la scroll up)
+                      // Rândul 2: WiFi și parcare
                       Row(
                         children: [
                           Expanded(child: _buildAmenityCard(Icons.wifi, "Free WiFi")),
@@ -96,7 +96,7 @@ class GymDetailScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
 
-                      // Randul 3 de facilitati
+                      // Rândul 3: Piscină și echipament
                       Row(
                         children: [
                           Expanded(child: _buildAmenityCard(Icons.pool, "Swimming Pool")),
@@ -106,7 +106,7 @@ class GymDetailScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
 
-                      // Randul 4 de facilitati
+                      // Rândul 4: Health bar și aer condiționat
                       Row(
                         children: [
                           Expanded(child: _buildAmenityCard(Icons.restaurant, "Health Bar")),
@@ -121,7 +121,7 @@ class GymDetailScreen extends StatelessWidget {
             ),
           ),
 
-          // Butoanele de navigare (Back si More) fixe in partea de sus
+          // Butoane de navigare sus (Back și More)
           Positioned(
             top: 50,
             left: 20,
@@ -130,13 +130,12 @@ class GymDetailScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _buildCircularButton(Icons.arrow_back, () => Navigator.pop(context)),
-                // Iconita "More" (cele trei puncte) pentru actiuni suplimentare
                 _buildCircularButton(Icons.more_vert, () {}),
               ],
             ),
           ),
 
-          // Bara fixa de jos pentru pret si butonul de rezervare
+          // Bara fixă de jos cu prețul și butonul de rezervare
           Positioned(
             bottom: 0,
             left: 0,
@@ -151,7 +150,7 @@ class GymDetailScreen extends StatelessWidget {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Colors.black.withValues(alpha: 0.05),
                     blurRadius: 20,
                     offset: const Offset(0, -5),
                   ),
@@ -160,10 +159,11 @@ class GymDetailScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
+                  // Prețul total
+                  const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Text("Total", style: TextStyle(color: AppColors.textSecondary)),
                       SizedBox(height: 4),
                       Text.rich(
@@ -182,6 +182,7 @@ class GymDetailScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+                  // Butonul de rezervare
                   ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
@@ -202,14 +203,14 @@ class GymDetailScreen extends StatelessWidget {
     );
   }
 
-  // Buton circular pentru actiunile din header (Back/More)
+  // Buton circular pentru acțiuni (Back / More)
   Widget _buildCircularButton(IconData icon, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.2),
+          color: Colors.black.withValues(alpha: 0.2),
           shape: BoxShape.circle,
         ),
         child: Icon(icon, color: Colors.white),
@@ -217,14 +218,14 @@ class GymDetailScreen extends StatelessWidget {
     );
   }
 
-  // Element pentru facilitati (amenities) cu iconita si text
+  // Card individual pentru facilități
   Widget _buildAmenityCard(IconData icon, String label) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
       decoration: BoxDecoration(
         color: AppColors.lightGreyBg,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.borderGrey.withOpacity(0.3)),
+        border: Border.all(color: AppColors.borderGrey.withValues(alpha: 0.3)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
