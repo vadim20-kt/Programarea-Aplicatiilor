@@ -16,8 +16,10 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         // Ascultăm modificările de stare din FitnessCubit
         child: BlocBuilder<FitnessCubit, FitnessState>(
@@ -39,12 +41,12 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       const Icon(Icons.error_outline, color: Colors.red, size: 48),
                       const SizedBox(height: 16),
-                      Text(state.message, textAlign: TextAlign.center, style: const TextStyle(fontSize: 16)),
+                      Text(state.message, textAlign: TextAlign.center, style: TextStyle(fontSize: 16, color: isDarkMode ? Colors.white : AppColors.textPrimary)),
                       const SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: () => context.read<FitnessCubit>().loadData(),
                         style: ElevatedButton.styleFrom(backgroundColor: AppColors.primaryGreen),
-                        child: const Text("Reîncearcă"),
+                        child: const Text("Reîncearcă", style: TextStyle(color: Colors.white)),
                       ),
                     ],
                   ),
@@ -106,12 +108,14 @@ class HomeScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: TextField(
+                      style: TextStyle(color: isDarkMode ? Colors.white : AppColors.textPrimary),
                       onChanged: (query) => context.read<FitnessCubit>().setSearchQuery(query),
                       decoration: InputDecoration(
                         hintText: 'Caută antrenamente...',
-                        prefixIcon: const Icon(Icons.search, color: AppColors.textSecondary),
+                        hintStyle: TextStyle(color: isDarkMode ? Colors.grey[400] : AppColors.textSecondary),
+                        prefixIcon: Icon(Icons.search, color: isDarkMode ? Colors.white70 : AppColors.textSecondary),
                         filled: true,
-                        fillColor: AppColors.lightGreyBg,
+                        fillColor: isDarkMode ? const Color(0xFF1E2638) : AppColors.lightGreyBg,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(24),
                           borderSide: BorderSide.none,
@@ -147,7 +151,6 @@ class HomeScreen extends StatelessWidget {
                             duration: plan.duration,
                             frequency: plan.frequency,
                             onStartPressed: () {
-                              // Afișare mesaj de confirmare
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text("Ai început planul: ${plan.title}! 🚀"),
@@ -156,7 +159,6 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               );
                               
-                              // Navigare către ecranul de detalii
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -205,10 +207,11 @@ class HomeScreen extends StatelessWidget {
                       child: ButtonTheme(
                         alignedDropdown: true,
                         child: DropdownButton<SortCriteria>(
+                          dropdownColor: isDarkMode ? const Color(0xFF1E2638) : Colors.white,
                           value: context.read<FitnessCubit>().sortCriteria,
-                          icon: const Icon(Icons.sort, color: AppColors.textSecondary),
+                          icon: Icon(Icons.sort, color: isDarkMode ? Colors.white70 : AppColors.textSecondary),
                           elevation: 16,
-                          style: const TextStyle(color: AppColors.textSecondary),
+                          style: TextStyle(color: isDarkMode ? Colors.white : AppColors.textPrimary),
                           onChanged: (SortCriteria? newValue) {
                             if (newValue != null) {
                               context.read<FitnessCubit>().setSortCriteria(newValue);
@@ -228,58 +231,43 @@ class HomeScreen extends StatelessWidget {
 
                   // Starea de listă goală (fără rezultate găsite)
                   if (state is FitnessEmpty)
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 40),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 40),
                       child: Center(
                         child: Text(
                           "Nu s-au găsit antrenamente pentru acest filtru și căutare.",
-                          style: TextStyle(color: AppColors.textSecondary, fontSize: 16),
+                          style: TextStyle(color: isDarkMode ? Colors.grey[400] : AppColors.textSecondary, fontSize: 16),
                           textAlign: TextAlign.center,
                         ),
                       ),
                     )
                   else
-                    // Starea de succes: afișare grilă cu carduri de antrenament
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: workouts.length,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 16,
-                          mainAxisSpacing: 16,
-                          childAspectRatio: 0.75,
-                        ),
-                        itemBuilder: (context, index) {
-                          final item = workouts[index];
-                          final isFav = favoriteIds.contains(item.id);
+                    // Lista verticală de programe de antrenament
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      itemCount: workouts.length,
+                      itemBuilder: (context, index) {
+                        final workout = workouts[index];
+                        final isFavorite = favoriteIds.contains(workout.id);
 
-                          return WorkoutItemCard(
-                            title: item.title,
-                            kcal: "${item.calories} kcal",
-                            time: "${item.durationMinutes} min",
-                            isPro: item.isPro,
-                            imageUrl: item.imageUrl,
-                            isFavorite: isFav,
+                        return Container(
+                          height: 180,
+                          margin: const EdgeInsets.only(bottom: 16),
+                          child: WorkoutItemCard(
+                            title: workout.title,
+                            kcal: "${workout.calories} Kcal",
+                            time: "${workout.durationMinutes} min",
+                            isPro: workout.isPro,
+                            imageUrl: workout.imageUrl,
+                            isFavorite: isFavorite,
                             onFavoriteToggle: () {
-                              context.read<FitnessCubit>().toggleFavorite(item.id);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    isFav
-                                        ? "Eliminat din favorite: ${item.title}"
-                                        : "Adăugat la favorite: ${item.title} ❤️",
-                                  ),
-                                  duration: const Duration(seconds: 1),
-                                  backgroundColor: AppColors.primaryGreen,
-                                ),
-                              );
+                              context.read<FitnessCubit>().toggleFavorite(workout.id);
                             },
-                          );
-                        },
-                      ),
+                          ),
+                        );
+                      },
                     ),
                 ],
               ),
@@ -290,30 +278,34 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // Textul afișat în meniul de sortare pentru fiecare criteriu
+  // Descrierea prietenoasă pentru opțiunile de sortare
   String _getSortLabel(SortCriteria criteria) {
     switch (criteria) {
       case SortCriteria.titleAsc:
-        return 'Titlu A-Z';
+        return 'Nume (A → Z)';
       case SortCriteria.titleDesc:
-        return 'Titlu Z-A';
+        return 'Nume (Z → A)';
       case SortCriteria.caloriesAsc:
-        return 'Calorii (puțin→mult)';
+        return 'Calorii (puțin → mult)';
       case SortCriteria.caloriesDesc:
-        return 'Calorii (mult→puțin)';
+        return 'Calorii (mult → puțin)';
       case SortCriteria.durationAsc:
-        return 'Durată (scurt→lung)';
+        return 'Durată (scurt → lung)';
       case SortCriteria.durationDesc:
-        return 'Durată (lung→scurt)';
+        return 'Durată (lung → scurt)';
     }
   }
 
   // Butonul interactiv pentru filtrare pe categorii
   Widget _buildFilterChip(BuildContext context, String id, String label, {bool isSelected = false}) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       margin: const EdgeInsets.only(right: 10),
       child: Material(
-        color: isSelected ? AppColors.primaryGreen : AppColors.lightGreyBg,
+        color: isSelected
+            ? AppColors.primaryGreen
+            : (isDarkMode ? const Color(0xFF1E2638) : AppColors.lightGreyBg),
         borderRadius: BorderRadius.circular(12),
         child: InkWell(
           onTap: () => context.read<FitnessCubit>().setFilter(id),
@@ -323,7 +315,9 @@ class HomeScreen extends StatelessWidget {
             child: Text(
               label,
               style: TextStyle(
-                color: isSelected ? AppColors.textWhite : AppColors.textSecondary,
+                color: isSelected
+                    ? Colors.white
+                    : (isDarkMode ? Colors.grey[300] : AppColors.textSecondary),
                 fontWeight: FontWeight.bold,
               ),
             ),

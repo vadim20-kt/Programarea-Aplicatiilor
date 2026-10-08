@@ -8,26 +8,28 @@ class SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        // Titlul secțiunii
+        // Titlul secțiunii adaptat la Dark/Light mode
         Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
+            color: isDarkMode ? Colors.white : const Color(0xFF0F172A),
           ),
         ),
         
-        // Etichetă interactivă
+        // Etichetă interactivă verde aprins
         const Text(
           "See All",
           style: TextStyle(
             color: AppColors.primaryGreen,
             fontSize: 14,
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ],

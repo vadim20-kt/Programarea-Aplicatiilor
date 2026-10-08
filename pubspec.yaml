@@ -1,5 +1,5 @@
 name: fitness_app_lab3
-description: "Aplicație Flutter - Laboratorul 3 (State Management BLoC/Cubit)"
+description: "Aplicație Flutter - Vector Gym"
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -17,16 +17,28 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: "^0.13.1"
+  flutter_native_splash: "^2.4.0"
   flutter_lints: ^3.0.0
 
 flutter_launcher_icons:
-  android: "launcher_icon"
+  android: true
   ios: true
-  image_path: "assets/icon/app_icon.jpg"
+  image_path: "assets/app_icon.jpg"
+  adaptive_icon_background: "#1E1E2C"
+  adaptive_icon_foreground: "assets/app_icon.jpg"
   min_sdk_android: 21
+  remove_alpha_ios: true
+
+flutter_native_splash:
+  color: "#1E1E2C"
+  image: "assets/app_icon.jpg"
+  android_12:
+    color: "#1E1E2C"
+    image: "assets/app_icon.jpg"
 
 flutter:
   uses-material-design: true
 
   assets:
     - assets/fitness_data.json
+    - assets/app_icon.jpg

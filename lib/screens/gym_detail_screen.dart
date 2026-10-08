@@ -37,7 +37,7 @@ class GymDetailScreen extends StatelessWidget {
     final amenities = gymData?.amenities ?? [];
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Stack(
         children: [
           // Conținutul derulabil cu detaliile despre sală

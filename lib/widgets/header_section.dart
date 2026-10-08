@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../cubit/theme_cubit.dart';
 import '../utils/app_colors.dart';
 
-// Secțiunea de antet cu data curentă, mesajul de salut și butonul de notificări
+// Secțiunea de antet cu data curentă, mesajul de salut, comutatorul de temă și notificări
 class HeaderSection extends StatelessWidget {
   final String date;
   final String greeting;
@@ -14,6 +16,8 @@ class HeaderSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -23,44 +27,72 @@ class HeaderSection extends StatelessWidget {
           children: [
             Text(
               date,
-              style: const TextStyle(color: AppColors.textSecondary, fontSize: 14),
+              style: TextStyle(
+                color: isDarkMode ? Colors.grey[400] : AppColors.textSecondary,
+                fontSize: 14,
+              ),
             ),
             const SizedBox(height: 4),
             Text(
               greeting,
-              style: const TextStyle(
-                color: AppColors.textPrimary,
+              style: TextStyle(
+                color: isDarkMode ? Colors.white : AppColors.textPrimary,
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ],
         ),
-        
-        // Iconița rotundă pentru notificări
-        Stack(
+
+        // Butoanele de acțiune: Comutator Temă (Luminos/Întunecat) și Notificări
+        Row(
           children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: const BoxDecoration(
-                color: AppColors.notificationCircle,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(Icons.notifications_outlined, color: AppColors.textPrimary),
-            ),
-            
-            // Indicator roșu pentru notificări necitite
-            Positioned(
-              top: 12,
-              right: 12,
+            // Buton pentru schimbare temă Light/Dark Mode
+            GestureDetector(
+              onTap: () => context.read<ThemeCubit>().toggleTheme(),
               child: Container(
-                width: 8,
-                height: 8,
-                decoration: const BoxDecoration(
-                  color: AppColors.notificationRed,
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: isDarkMode ? const Color(0xFF1E2638) : AppColors.notificationCircle,
                   shape: BoxShape.circle,
                 ),
+                child: Icon(
+                  isDarkMode ? Icons.wb_sunny_rounded : Icons.nightlight_round,
+                  color: isDarkMode ? AppColors.starYellow : AppColors.textPrimary,
+                  size: 22,
+                ),
               ),
+            ),
+            const SizedBox(width: 10),
+
+            // Iconița rotundă pentru notificări
+            Stack(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: isDarkMode ? const Color(0xFF1E2638) : AppColors.notificationCircle,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.notifications_outlined,
+                    color: isDarkMode ? Colors.white : AppColors.textPrimary,
+                    size: 22,
+                  ),
+                ),
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: Container(
+                    width: 8,
+                    height: 8,
+                    decoration: const BoxDecoration(
+                      color: AppColors.notificationRed,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
