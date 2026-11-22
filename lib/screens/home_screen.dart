@@ -41,7 +41,14 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       const Icon(Icons.error_outline, color: Colors.red, size: 48),
                       const SizedBox(height: 16),
-                      Text(state.message, textAlign: TextAlign.center, style: TextStyle(fontSize: 16, color: isDarkMode ? Colors.white : AppColors.textPrimary)),
+                      Text(
+                        state.message,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: isDarkMode ? Colors.white : AppColors.textPrimary,
+                        ),
+                      ),
                       const SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: () => context.read<FitnessCubit>().loadData(),
@@ -104,23 +111,54 @@ class HomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
 
-                  // Câmpul de căutare pentru filtrarea rapidă
+                  // Câmpul de căutare pentru filtrarea rapidă - Container conturat vizibil
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: TextField(
-                      style: TextStyle(color: isDarkMode ? Colors.white : AppColors.textPrimary),
-                      onChanged: (query) => context.read<FitnessCubit>().setSearchQuery(query),
-                      decoration: InputDecoration(
-                        hintText: 'Caută antrenamente...',
-                        hintStyle: TextStyle(color: isDarkMode ? Colors.grey[400] : AppColors.textSecondary),
-                        prefixIcon: Icon(Icons.search, color: isDarkMode ? Colors.white70 : AppColors.textSecondary),
-                        filled: true,
-                        fillColor: isDarkMode ? const Color(0xFF1E2638) : AppColors.lightGreyBg,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24),
-                          borderSide: BorderSide.none,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(24),
+                        boxShadow: [
+                          BoxShadow(
+                            color: isDarkMode
+                                ? Colors.black.withValues(alpha: 0.25)
+                                : Colors.black.withValues(alpha: 0.04),
+                            blurRadius: 10,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: TextField(
+                        style: TextStyle(color: isDarkMode ? Colors.white : AppColors.textPrimary),
+                        onChanged: (query) => context.read<FitnessCubit>().setSearchQuery(query),
+                        decoration: InputDecoration(
+                          hintText: 'Caută antrenamente...',
+                          hintStyle: TextStyle(
+                            color: isDarkMode ? Colors.grey[400] : AppColors.textSecondary,
+                          ),
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: isDarkMode ? Colors.white70 : AppColors.textSecondary,
+                          ),
+                          filled: true,
+                          fillColor: isDarkMode ? AppColors.darkCard : Colors.white,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(24),
+                            borderSide: BorderSide(
+                              color: isDarkMode
+                                  ? Colors.white.withValues(alpha: 0.15)
+                                  : AppColors.borderGrey,
+                              width: 1.5,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(24),
+                            borderSide: const BorderSide(
+                              color: AppColors.primaryGreen,
+                              width: 2,
+                            ),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                         ),
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                       ),
                     ),
                   ),
@@ -132,7 +170,7 @@ class HomeScreen extends StatelessWidget {
                     child: SectionHeader(title: "Featured Plan"),
                   ),
                   const SizedBox(height: 12),
-                  
+
                   // Listă orizontală de planuri recomandate
                   SizedBox(
                     height: 200,
@@ -152,13 +190,13 @@ class HomeScreen extends StatelessWidget {
                             frequency: plan.frequency,
                             onStartPressed: () {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text("Ai început planul: ${plan.title}! 🚀"),
-                                  duration: const Duration(seconds: 2),
+                                const SnackBar(
+                                  content: Text("Ai început planul de antrenament! 🚀"),
+                                  duration: Duration(seconds: 2),
                                   backgroundColor: AppColors.primaryGreen,
                                 ),
                               );
-                              
+
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -183,7 +221,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
 
-                  // Filtrele orizontale pentru categorii
+                  // Filtrele orizontale pentru categorii - Containere vizibile pe ambele teme
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -207,11 +245,16 @@ class HomeScreen extends StatelessWidget {
                       child: ButtonTheme(
                         alignedDropdown: true,
                         child: DropdownButton<SortCriteria>(
-                          dropdownColor: isDarkMode ? const Color(0xFF1E2638) : Colors.white,
+                          dropdownColor: isDarkMode ? AppColors.darkCard : Colors.white,
                           value: context.read<FitnessCubit>().sortCriteria,
-                          icon: Icon(Icons.sort, color: isDarkMode ? Colors.white70 : AppColors.textSecondary),
+                          icon: Icon(
+                            Icons.sort,
+                            color: isDarkMode ? Colors.white70 : AppColors.textSecondary,
+                          ),
                           elevation: 16,
-                          style: TextStyle(color: isDarkMode ? Colors.white : AppColors.textPrimary),
+                          style: TextStyle(
+                            color: isDarkMode ? Colors.white : AppColors.textPrimary,
+                          ),
                           onChanged: (SortCriteria? newValue) {
                             if (newValue != null) {
                               context.read<FitnessCubit>().setSortCriteria(newValue);
@@ -236,7 +279,10 @@ class HomeScreen extends StatelessWidget {
                       child: Center(
                         child: Text(
                           "Nu s-au găsit antrenamente pentru acest filtru și căutare.",
-                          style: TextStyle(color: isDarkMode ? Colors.grey[400] : AppColors.textSecondary, fontSize: 16),
+                          style: TextStyle(
+                            color: isDarkMode ? Colors.grey[400] : AppColors.textSecondary,
+                            fontSize: 16,
+                          ),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -296,20 +342,38 @@ class HomeScreen extends StatelessWidget {
     }
   }
 
-  // Butonul interactiv pentru filtrare pe categorii
+  // Butonul interactiv pentru filtrare pe categorii - cu fundal, bordură și umbră vizibilă
   Widget _buildFilterChip(BuildContext context, String id, String label, {bool isSelected = false}) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       margin: const EdgeInsets.only(right: 10),
-      child: Material(
+      decoration: BoxDecoration(
         color: isSelected
             ? AppColors.primaryGreen
-            : (isDarkMode ? const Color(0xFF1E2638) : AppColors.lightGreyBg),
-        borderRadius: BorderRadius.circular(12),
+            : (isDarkMode ? AppColors.darkCard : Colors.white),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: isSelected
+              ? AppColors.primaryGreen
+              : (isDarkMode ? Colors.white.withValues(alpha: 0.15) : AppColors.borderGrey),
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: isDarkMode
+                ? Colors.black.withValues(alpha: 0.25)
+                : Colors.black.withValues(alpha: 0.05),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
         child: InkWell(
           onTap: () => context.read<FitnessCubit>().setFilter(id),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(14),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             child: Text(
@@ -317,7 +381,7 @@ class HomeScreen extends StatelessWidget {
               style: TextStyle(
                 color: isSelected
                     ? Colors.white
-                    : (isDarkMode ? Colors.grey[300] : AppColors.textSecondary),
+                    : (isDarkMode ? Colors.grey[200] : AppColors.textPrimary),
                 fontWeight: FontWeight.bold,
               ),
             ),

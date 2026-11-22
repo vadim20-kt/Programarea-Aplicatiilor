@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../utils/app_colors.dart';
 
-// Card pentru afișarea progresului provocării din ziua curentă
+// Card pentru afișarea progresului provocării din ziua curentă - adaptat dinamic la tema Light/Dark
 class TodayChallengeCard extends StatelessWidget {
   final String title;
   final String activity;
@@ -20,11 +20,26 @@ class TodayChallengeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.darkCard,
+        color: isDarkMode ? AppColors.darkCard : Colors.white,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: isDarkMode ? Colors.white.withValues(alpha: 0.12) : AppColors.borderGrey,
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: isDarkMode
+                ? Colors.black.withValues(alpha: 0.3)
+                : Colors.black.withValues(alpha: 0.06),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -35,20 +50,24 @@ class TodayChallengeCard extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: const TextStyle(color: AppColors.textSecondary, fontSize: 14),
+                style: TextStyle(
+                  color: isDarkMode ? Colors.grey[400] : AppColors.textSecondary,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
               const SizedBox(height: 4),
               Text(
                 activity,
-                style: const TextStyle(
-                  color: AppColors.textWhite,
+                style: TextStyle(
+                  color: isDarkMode ? AppColors.textWhite : AppColors.textPrimary,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ],
           ),
-          
+
           // Indicator circular de progres
           Stack(
             alignment: Alignment.center,
@@ -58,15 +77,15 @@ class TodayChallengeCard extends StatelessWidget {
                 height: 60,
                 child: CircularProgressIndicator(
                   value: progress,
-                  backgroundColor: Colors.grey[800],
+                  backgroundColor: isDarkMode ? Colors.grey[800] : AppColors.lightGreyBg,
                   valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primaryGreen),
                   strokeWidth: 5,
                 ),
               ),
               Text(
                 "$completed/$total",
-                style: const TextStyle(
-                  color: AppColors.textWhite,
+                style: TextStyle(
+                  color: isDarkMode ? AppColors.textWhite : AppColors.textPrimary,
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                 ),

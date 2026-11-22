@@ -24,15 +24,32 @@ class WorkoutItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: isDarkMode
+              ? Colors.white.withValues(alpha: 0.15)
+              : AppColors.borderGrey.withValues(alpha: 0.8),
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: isDarkMode
+                ? Colors.black.withValues(alpha: 0.35)
+                : Colors.black.withValues(alpha: 0.08),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
         // Imagine de fundal cu filtru întunecat pentru lizibilitate
         image: DecorationImage(
           image: NetworkImage(imageUrl),
           fit: BoxFit.cover,
           colorFilter: ColorFilter.mode(
-            Colors.black.withValues(alpha: 0.35),
+            Colors.black.withValues(alpha: 0.4),
             BlendMode.darken,
           ),
           onError: (exception, stackTrace) {},
@@ -55,8 +72,9 @@ class WorkoutItemCard extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.4),
+                      color: Colors.black.withValues(alpha: 0.45),
                       shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white24, width: 1),
                     ),
                     child: Icon(
                       isFavorite ? Icons.favorite : Icons.favorite_border,
@@ -77,6 +95,9 @@ class WorkoutItemCard extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Colors.white.withValues(alpha: 0.95),
                       borderRadius: BorderRadius.circular(12),
+                      boxShadow: const [
+                        BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2))
+                      ],
                     ),
                     child: const Row(
                       mainAxisSize: MainAxisSize.min,
@@ -95,7 +116,7 @@ class WorkoutItemCard extends StatelessWidget {
                     ),
                   ),
                 ),
-              
+
               // Titlul, caloriile și durata antrenamentului (jos)
               Positioned(
                 bottom: 16,
@@ -116,7 +137,7 @@ class WorkoutItemCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    
+
                     // Afișare calorii și timp
                     FittedBox(
                       fit: BoxFit.scaleDown,

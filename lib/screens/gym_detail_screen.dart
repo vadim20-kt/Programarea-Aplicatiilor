@@ -16,6 +16,8 @@ class GymDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     // Preluarea stării curente din FitnessCubit
     final state = context.watch<FitnessCubit>().state;
     dynamic gymData;
@@ -73,30 +75,75 @@ class GymDetailScreen extends StatelessWidget {
                         children: [
                           const Icon(Icons.star, color: AppColors.starYellow, size: 22),
                           const SizedBox(width: 6),
-                          Text(rating.toString(), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                          Text(
+                            rating.toString(),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              color: isDarkMode ? Colors.white : AppColors.textPrimary,
+                            ),
+                          ),
                           const SizedBox(width: 6),
-                          Text("($reviewCount reviews)", style: const TextStyle(color: AppColors.textSecondary)),
+                          Text(
+                            "($reviewCount reviews)",
+                            style: TextStyle(
+                              color: isDarkMode ? Colors.grey[400] : AppColors.textSecondary,
+                            ),
+                          ),
                         ],
                       ),
                       const SizedBox(height: 16),
-                      
+
                       // Titlul și locația
-                      Text(gymName, style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+                      Text(
+                        gymName,
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: isDarkMode ? Colors.white : AppColors.textPrimary,
+                        ),
+                      ),
                       const SizedBox(height: 8),
-                      Text(location, style: const TextStyle(color: AppColors.textSecondary, fontSize: 16)),
+                      Text(
+                        location,
+                        style: TextStyle(
+                          color: isDarkMode ? Colors.grey[400] : AppColors.textSecondary,
+                          fontSize: 16,
+                        ),
+                      ),
                       const SizedBox(height: 24),
-                      
+
                       // Descrierea detaliată
-                      Text(description, style: const TextStyle(color: AppColors.textSecondary, height: 1.5)),
+                      Text(
+                        description,
+                        style: TextStyle(
+                          color: isDarkMode ? Colors.grey[300] : AppColors.textSecondary,
+                          height: 1.5,
+                        ),
+                      ),
                       const SizedBox(height: 24),
-                      const Divider(color: AppColors.borderGrey),
+                      Divider(
+                        color: isDarkMode ? Colors.white12 : AppColors.borderGrey,
+                      ),
                       const SizedBox(height: 24),
-                      
+
                       // Lista de facilități
-                      const Text("Amenities", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      Text(
+                        "Amenities",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: isDarkMode ? Colors.white : AppColors.textPrimary,
+                        ),
+                      ),
                       const SizedBox(height: 16),
                       amenities.isEmpty
-                          ? const Text("Nu există facilități listate.", style: TextStyle(color: AppColors.textSecondary))
+                          ? Text(
+                              "Nu există facilități listate.",
+                              style: TextStyle(
+                                color: isDarkMode ? Colors.grey[400] : AppColors.textSecondary,
+                              ),
+                            )
                           : ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
@@ -108,10 +155,22 @@ class GymDetailScreen extends StatelessWidget {
                                   padding: const EdgeInsets.only(bottom: 16),
                                   child: Row(
                                     children: [
-                                      Expanded(child: _buildAmenityCard(Icons.check_circle_outline, amenities[firstIndex].name)),
+                                      Expanded(
+                                        child: _buildAmenityCard(
+                                          context,
+                                          Icons.check_circle_outline,
+                                          amenities[firstIndex].name,
+                                        ),
+                                      ),
                                       const SizedBox(width: 16),
                                       if (secondIndex < amenities.length)
-                                        Expanded(child: _buildAmenityCard(Icons.check_circle_outline, amenities[secondIndex].name))
+                                        Expanded(
+                                          child: _buildAmenityCard(
+                                            context,
+                                            Icons.check_circle_outline,
+                                            amenities[secondIndex].name,
+                                          ),
+                                        )
                                       else
                                         const Spacer(),
                                     ],
@@ -125,14 +184,14 @@ class GymDetailScreen extends StatelessWidget {
               ],
             ),
           ),
-          
+
           // Butonul circular pentru revenire la ecranul anterior
           Positioned(
             top: 50,
             left: 20,
             child: _buildCircularButton(Icons.arrow_back, () => Navigator.pop(context)),
           ),
-          
+
           // Bara inferioară cu prețul și butonul de rezervare
           Positioned(
             bottom: 0,
@@ -141,9 +200,26 @@ class GymDetailScreen extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.fromLTRB(24, 24, 24, 40),
               decoration: BoxDecoration(
-                color: AppColors.background,
-                borderRadius: const BorderRadius.only(topLeft: Radius.circular(32), topRight: Radius.circular(32)),
-                boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 20, offset: const Offset(0, -5))],
+                color: isDarkMode ? AppColors.darkCard : Colors.white,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(32),
+                  topRight: Radius.circular(32),
+                ),
+                border: Border(
+                  top: BorderSide(
+                    color: isDarkMode ? Colors.white12 : AppColors.borderGrey,
+                    width: 1.5,
+                  ),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: isDarkMode
+                        ? Colors.black.withValues(alpha: 0.4)
+                        : Colors.black.withValues(alpha: 0.08),
+                    blurRadius: 20,
+                    offset: const Offset(0, -5),
+                  ),
+                ],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -152,12 +228,24 @@ class GymDetailScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text("Total", style: TextStyle(color: AppColors.textSecondary)),
+                      Text(
+                        "Total",
+                        style: TextStyle(
+                          color: isDarkMode ? Colors.grey[400] : AppColors.textSecondary,
+                        ),
+                      ),
                       const SizedBox(height: 4),
-                      Text(pricingFormatted, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                      Text(
+                        pricingFormatted,
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: isDarkMode ? Colors.white : AppColors.textPrimary,
+                        ),
+                      ),
                     ],
                   ),
-                  
+
                   // Butonul de rezervare
                   ElevatedButton(
                     onPressed: () {
@@ -174,9 +262,12 @@ class GymDetailScreen extends StatelessWidget {
                       foregroundColor: AppColors.textWhite,
                       padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 18),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                      elevation: 0,
+                      elevation: 2,
                     ),
-                    child: const Text("Reserve", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    child: const Text(
+                      "Reserve",
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ],
               ),
@@ -193,27 +284,55 @@ class GymDetailScreen extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.2), shape: BoxShape.circle),
+        decoration: BoxDecoration(
+          color: Colors.black.withValues(alpha: 0.4),
+          shape: BoxShape.circle,
+          border: Border.all(color: Colors.white24, width: 1),
+        ),
         child: Icon(icon, color: Colors.white),
       ),
     );
   }
 
-  // Card pentru afișarea unei facilități
-  Widget _buildAmenityCard(IconData icon, String label) {
+  // Card pentru afișarea unei facilități - adaptat vizibil la temă
+  Widget _buildAmenityCard(BuildContext context, IconData icon, String label) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
       decoration: BoxDecoration(
-        color: AppColors.lightGreyBg,
+        color: isDarkMode ? AppColors.darkCard : Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.borderGrey.withValues(alpha: 0.3)),
+        border: Border.all(
+          color: isDarkMode ? Colors.white.withValues(alpha: 0.15) : AppColors.borderGrey,
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: isDarkMode
+                ? Colors.black.withValues(alpha: 0.25)
+                : Colors.black.withValues(alpha: 0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: AppColors.textPrimary, size: 24),
+          Icon(
+            icon,
+            color: isDarkMode ? AppColors.primaryGreen : AppColors.textPrimary,
+            size: 24,
+          ),
           const SizedBox(width: 12),
-          Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
+          Text(
+            label,
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              color: isDarkMode ? Colors.white : AppColors.textPrimary,
+            ),
+          ),
         ],
       ),
     );

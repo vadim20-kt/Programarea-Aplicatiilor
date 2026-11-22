@@ -53,8 +53,21 @@ class HeaderSection extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: isDarkMode ? const Color(0xFF1E2638) : AppColors.notificationCircle,
+                  color: isDarkMode ? AppColors.darkCard : Colors.white,
                   shape: BoxShape.circle,
+                  border: Border.all(
+                    color: isDarkMode ? Colors.white.withValues(alpha: 0.15) : AppColors.borderGrey,
+                    width: 1.5,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: isDarkMode
+                          ? Colors.black.withValues(alpha: 0.25)
+                          : Colors.black.withValues(alpha: 0.05),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
                 child: Icon(
                   isDarkMode ? Icons.wb_sunny_rounded : Icons.nightlight_round,
@@ -71,8 +84,21 @@ class HeaderSection extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: isDarkMode ? const Color(0xFF1E2638) : AppColors.notificationCircle,
+                    color: isDarkMode ? AppColors.darkCard : Colors.white,
                     shape: BoxShape.circle,
+                    border: Border.all(
+                      color: isDarkMode ? Colors.white.withValues(alpha: 0.15) : AppColors.borderGrey,
+                      width: 1.5,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: isDarkMode
+                            ? Colors.black.withValues(alpha: 0.25)
+                            : Colors.black.withValues(alpha: 0.05),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
                   ),
                   child: Icon(
                     Icons.notifications_outlined,
@@ -81,8 +107,8 @@ class HeaderSection extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  top: 10,
-                  right: 10,
+                  top: 8,
+                  right: 8,
                   child: Container(
                     width: 8,
                     height: 8,

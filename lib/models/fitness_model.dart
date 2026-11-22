@@ -1,4 +1,6 @@
-// Modelul principal care conține toate datele din JSON
+import '../domain/entities/fitness_entities.dart';
+
+// Modelul principal pentru Presentation / UI
 class FitnessData {
   final FitnessHomePage fitnessHomePage;
   final FitnessGymDetailsPage fitnessGymDetailsPage;
@@ -9,6 +11,13 @@ class FitnessData {
     return FitnessData(
       fitnessHomePage: FitnessHomePage.fromJson(json['fitnessHomePage']),
       fitnessGymDetailsPage: FitnessGymDetailsPage.fromJson(json['fitnessGymDetailsPage']),
+    );
+  }
+
+  factory FitnessData.fromEntity(FitnessDataEntity entity) {
+    return FitnessData(
+      fitnessHomePage: FitnessHomePage.fromEntity(entity.fitnessHomePage),
+      fitnessGymDetailsPage: FitnessGymDetailsPage.fromEntity(entity.fitnessGymDetailsPage),
     );
   }
 }
@@ -35,9 +44,18 @@ class FitnessHomePage {
       workoutPrograms: WorkoutPrograms.fromJson(json['workoutPrograms']),
     );
   }
+
+  factory FitnessHomePage.fromEntity(FitnessHomePageEntity entity) {
+    return FitnessHomePage(
+      header: Header.fromEntity(entity.header),
+      todaysChallenge: TodaysChallenge.fromEntity(entity.todaysChallenge),
+      featuredPlans: entity.featuredPlans.map((e) => FeaturedPlan.fromEntity(e)).toList(),
+      workoutPrograms: WorkoutPrograms.fromEntity(entity.workoutPrograms),
+    );
+  }
 }
 
-// Model pentru antet (data și salutul)
+// Model pentru antet
 class Header {
   final String date;
   final String greeting;
@@ -49,6 +67,10 @@ class Header {
       date: json['date'] ?? '',
       greeting: json['greeting'] ?? '',
     );
+  }
+
+  factory Header.fromEntity(HeaderEntity entity) {
+    return Header(date: entity.date, greeting: entity.greeting);
   }
 }
 
@@ -75,6 +97,16 @@ class TodaysChallenge {
       completed: (json['completed'] as num?)?.toInt() ?? 0,
       total: (json['total'] as num?)?.toInt() ?? 0,
       progress: (json['progress'] as num?)?.toDouble() ?? 0.0,
+    );
+  }
+
+  factory TodaysChallenge.fromEntity(TodaysChallengeEntity entity) {
+    return TodaysChallenge(
+      title: entity.title,
+      activity: entity.activity,
+      completed: entity.completed,
+      total: entity.total,
+      progress: entity.progress,
     );
   }
 }
@@ -107,6 +139,17 @@ class FeaturedPlan {
       imageUrl: json['imageUrl'] ?? '',
     );
   }
+
+  factory FeaturedPlan.fromEntity(FeaturedPlanEntity entity) {
+    return FeaturedPlan(
+      id: entity.id,
+      title: entity.title,
+      duration: entity.duration,
+      frequency: entity.frequency,
+      actionLabel: entity.actionLabel,
+      imageUrl: entity.imageUrl,
+    );
+  }
 }
 
 // Model pentru secțiunea de programe și filtre
@@ -120,6 +163,13 @@ class WorkoutPrograms {
     return WorkoutPrograms(
       filters: (json['filters'] as List).map((e) => FilterItem.fromJson(e)).toList(),
       items: (json['items'] as List).map((e) => WorkoutItem.fromJson(e)).toList(),
+    );
+  }
+
+  factory WorkoutPrograms.fromEntity(WorkoutProgramsEntity entity) {
+    return WorkoutPrograms(
+      filters: entity.filters.map((e) => FilterItem.fromEntity(e)).toList(),
+      items: entity.items.map((e) => WorkoutItem.fromEntity(e)).toList(),
     );
   }
 }
@@ -138,6 +188,10 @@ class FilterItem {
       name: json['name'] ?? '',
       selected: json['selected'] ?? false,
     );
+  }
+
+  factory FilterItem.fromEntity(FilterItemEntity entity) {
+    return FilterItem(id: entity.id, name: entity.name, selected: entity.selected);
   }
 }
 
@@ -172,6 +226,18 @@ class WorkoutItem {
       category: json['category'] as String?,
     );
   }
+
+  factory WorkoutItem.fromEntity(WorkoutItemEntity entity) {
+    return WorkoutItem(
+      id: entity.id,
+      title: entity.title,
+      calories: entity.calories,
+      durationMinutes: entity.durationMinutes,
+      isPro: entity.isPro,
+      imageUrl: entity.imageUrl,
+      category: entity.category,
+    );
+  }
 }
 
 // Model pentru pagina de detalii a sălii de fitness
@@ -182,6 +248,10 @@ class FitnessGymDetailsPage {
 
   factory FitnessGymDetailsPage.fromJson(Map<String, dynamic> json) {
     return FitnessGymDetailsPage(gym: Gym.fromJson(json['gym']));
+  }
+
+  factory FitnessGymDetailsPage.fromEntity(FitnessGymDetailsPageEntity entity) {
+    return FitnessGymDetailsPage(gym: Gym.fromEntity(entity.gym));
   }
 }
 
@@ -222,6 +292,20 @@ class Gym {
       pricing: Pricing.fromJson(json['pricing'] ?? {}),
     );
   }
+
+  factory Gym.fromEntity(GymEntity entity) {
+    return Gym(
+      id: entity.id,
+      name: entity.name,
+      location: entity.location,
+      heroImageUrl: entity.heroImageUrl,
+      rating: entity.rating,
+      reviewCount: entity.reviewCount,
+      description: entity.description,
+      amenities: entity.amenities.map((e) => Amenity.fromEntity(e)).toList(),
+      pricing: Pricing.fromEntity(entity.pricing),
+    );
+  }
 }
 
 // Model pentru facilitățile sălii (dușuri, vestiare, etc.)
@@ -236,6 +320,10 @@ class Amenity {
       id: json['id'] ?? '',
       name: json['name'] ?? '',
     );
+  }
+
+  factory Amenity.fromEntity(AmenityEntity entity) {
+    return Amenity(id: entity.id, name: entity.name);
   }
 }
 
@@ -259,6 +347,15 @@ class Pricing {
       currency: json['currency'] ?? '',
       period: json['period'] ?? '',
       formatted: json['formatted'] ?? '',
+    );
+  }
+
+  factory Pricing.fromEntity(PricingEntity entity) {
+    return Pricing(
+      amount: entity.amount,
+      currency: entity.currency,
+      period: entity.period,
+      formatted: entity.formatted,
     );
   }
 }

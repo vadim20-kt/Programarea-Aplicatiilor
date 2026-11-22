@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import '../utils/app_colors.dart';
 
-// Card reutilizabil pentru afișarea planurilor de antrenament recomandate
+// Card reutilizabil pentru afișarea planurilor recomandate cu bordură și umbră clară
 class FeaturedPlanCard extends StatelessWidget {
   final String title;
   final String imageUrl;
   final String duration;
   final String frequency;
   final VoidCallback onStartPressed;
-  
+
   const FeaturedPlanCard({
-    super.key, 
+    super.key,
     required this.title,
     required this.imageUrl,
     required this.duration,
@@ -20,14 +20,33 @@ class FeaturedPlanCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
-        // Imaginea de fundal cu filtru întunecat pentru lizibilitate sporită
+        border: Border.all(
+          color: isDarkMode
+              ? Colors.white.withValues(alpha: 0.15)
+              : AppColors.borderGrey.withValues(alpha: 0.8),
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: isDarkMode
+                ? Colors.black.withValues(alpha: 0.4)
+                : Colors.black.withValues(alpha: 0.08),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
         image: DecorationImage(
           image: NetworkImage(imageUrl),
           fit: BoxFit.cover,
-          colorFilter: ColorFilter.mode(Colors.black.withValues(alpha: 0.4), BlendMode.darken),
+          colorFilter: ColorFilter.mode(
+            Colors.black.withValues(alpha: 0.45),
+            BlendMode.darken,
+          ),
           onError: (exception, stackTrace) {},
         ),
       ),
@@ -52,7 +71,7 @@ class FeaturedPlanCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                
+
                 // Durata și frecvența săptămânală
                 Row(
                   children: [
@@ -66,7 +85,7 @@ class FeaturedPlanCard extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 20),
-                
+
                 // Butonul de lansare a planului
                 ElevatedButton(
                   onPressed: onStartPressed,
@@ -75,7 +94,7 @@ class FeaturedPlanCard extends StatelessWidget {
                     foregroundColor: AppColors.textWhite,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                    elevation: 0,
+                    elevation: 2,
                   ),
                   child: const Text(
                     "Start Now",
